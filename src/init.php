@@ -84,13 +84,13 @@ function render_menu_select($attributes) {
 	}
 
 	$dropdown_id = esc_attr(uniqid('wp-block-menu-select-'));
-	$title = __('Menu Auswahl');
+	$title = __('Menu Selection');
 
 	$menus = get_terms('nav_menu', array('hide_empty' => true, 'fields' => 'id=>name'));
-	$label = esc_attr(__('Menu auswählen...'));
+	$label = esc_attr(__('select menu...'));
 
 	$block_content = '<label class="screen-reader-text" for="' . $dropdown_id . '">' . $title . '</label>
-	<select id="' . $dropdown_id . '" name="archive-dropdown">
+	<select id="' . $dropdown_id . '" name="menu-select">
 	<option>' . $label . '</option>';
 	foreach($menus as $id => $name) {
 		$block_content .= '<option value=' . $id .'>' . $name . '</option>';

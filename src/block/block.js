@@ -17,7 +17,6 @@ const RenderMenu = () => (
 	<ServerSideRender block="cgb/block-wp-menus-block" />
 );
 
-
 /**
 * Register: aa Gutenberg Block.
 *
@@ -44,8 +43,8 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 
 	attributes: {
 		'menu-id': {
-			'type': Number,
-			'default': null
+			type: Number,
+			default: null
 		}
 	},
 
@@ -62,7 +61,7 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 		console.log('edit fired', props);
 		return (
 			<div className={ props.className }>
-			<RenderMenu />
+				<RenderMenu />
 			</div>
 		);
 	},
@@ -76,21 +75,17 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	* @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	*/
 	save: function( props ) {
-		console.log('save fired', props);
+		console.log('save fired', props );
+		// return null;
 		return (
 			<div>
-			<p>— Hello from the frontend.</p>
-			<p>
-			CGB BLOCK: <code>wp-menus-block</code> is a new Gutenberg block.
-			</p>
-			<p>
-			It was created via{ ' ' }
-			<code>
-			<a href="https://github.com/ahmadawais/create-guten-block">
-			create-guten-block
-			</a>
-			</code>.
-			</p>
+				<p>— Hello from the frontend.</p>
+				<p>CGB BLOCK: <code>wp-menus-block</code> is a new Gutenberg block.</p>
+				<p>It was created via{ ' ' }
+					<code>
+						<a href="https://github.com/ahmadawais/create-guten-block">create-guten-block</a>
+					</code>.
+				</p>
 			</div>
 		);
 	},

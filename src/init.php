@@ -106,5 +106,17 @@ function render_menu_select($attributes) {
 	return $block_content;
 }
 
+function get_menus_list() {
+	return get_terms('nav_menu', array('hide_empty' => true, 'fields' => 'id=>name'));
+}
+
 // Hook: Block assets.
 add_action( 'init', 'wp_menus_block_cgb_block_assets' );
+
+// Hook: rest_api_init
+add_action('rest_api_init', function () {
+	register_rest_route('wp-menus-block/v1', '/menus', array(
+		'methods' => 'get',
+		'callback' => 'get_menus_list'
+	));
+});

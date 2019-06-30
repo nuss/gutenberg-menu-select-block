@@ -107,7 +107,13 @@ function render_menu_select($attributes) {
 }
 
 function get_menus_list() {
-	return get_terms('nav_menu', array('hide_empty' => true, 'fields' => 'id=>name'));
+	$res = [];
+	$menus = get_terms('nav_menu', array('hide_empty' => true, 'fields' => 'id=>name'));
+	foreach($menus as $key => $value) {
+		$res[] = array('label' => $value, 'value' => $key);
+	}
+
+	return $res;
 }
 
 // Hook: Block assets.

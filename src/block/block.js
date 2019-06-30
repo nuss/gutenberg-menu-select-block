@@ -11,11 +11,29 @@ import './editor.scss';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-import { ServerSideRender } from '@wordpress/components';
+import { SelectControl } from '@wordpress/components';
+// import { withState } from '@wordpress/compose';
+import apiFetch from '@wordpress/api-fetch';
+// import { registerStore, withSelect } from '@wordpress/data';
 
-const RenderMenu = () => (
-	<ServerSideRender block="cgb/block-wp-menus-block" />
-);
+const menuList = () => {
+	apiFetch( { path: '/wp-json/wp-menus-block/v1/menus' } ).then( ( menus ) => {
+		return menus;
+	} );
+};
+
+const MenuSelect = ( { menu, setState } ) => {
+	return (
+		<SelectControl
+			label="Select Menu"
+			value={ menu }
+			options={ menuList() }
+			onChange={ ( myMenu ) => {
+				setState( { myMenu } );
+			} }
+		/>
+	);
+};
 
 /**
 * Register: aa Gutenberg Block.
@@ -44,8 +62,8 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	attributes: {
 		'menu-id': {
 			type: Number,
-			default: null
-		}
+			default: null,
+		},
 	},
 
 	/**
@@ -56,12 +74,12 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	*
 	* @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	*/
-	edit: function( props ) {
+	edit: ( props ) => {
 		// Creates a <p class='wp-block-cgb-block-wp-menus-block'></p>.
-		console.log('edit fired', props);
+		// console.log('edit fired', props );
 		return (
 			<div className={ props.className }>
-				<RenderMenu />
+				<MenuSelect />
 			</div>
 		);
 	},
@@ -74,8 +92,8 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	*
 	* @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	*/
-	save: function( props ) {
-		console.log('save fired', props );
+	save: () => {
+		// console.log('save fired', props );
 		// return null;
 		return (
 			<div>

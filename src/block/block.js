@@ -12,23 +12,23 @@ import './editor.scss';
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 import { SelectControl } from '@wordpress/components';
-// import { withState } from '@wordpress/compose';
+import { withState } from '@wordpress/compose';
 // import apiFetch from '@wordpress/api-fetch';
 
-const MenuSelect = ( { menu, setState } ) => {
-	return (
-		<SelectControl
-			label="Select Menu"
-			value={ menu }
-			// eslint-disable-next-line no-undef
-			options={ menu_options.options }
-			onChange={ ( myMenu ) => {
-				// setAttributes( { menu: myMenu } );
-				setState( { menu: myMenu } );
-			} }
-		/>
-	);
-};
+const MenuSelect = withState( { menu: 13 } )( ( props, { menu } ) => (
+	<SelectControl
+		label="Select Menu"
+		value={ menu }
+		// options created in init.php through wp_localize_script()
+		// eslint-disable-next-line no-undef
+		options={ menu_options.options }
+		onChange={ ( selectedMenu ) => {
+			console.log( 'props', props, 'menu', selectedMenu );
+			props.setAttributes( { menu: selectedMenu } );
+			props.setState( { menu: selectedMenu } );
+		} }
+	/>
+) );
 
 /**
 * Register: aa Gutenberg Block.
@@ -75,7 +75,7 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 		// console.log('edit fired', props );
 		return (
 			<div className={ props.className }>
-				<MenuSelect />
+				<MenuSelect { ...props } />
 			</div>
 		);
 	},
@@ -90,7 +90,7 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	* @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	*/
 	save: ( props ) => {
-		// console.log('save fired', props );
+		console.log('save fired', props );
 		return (
 			props.menu
 		);

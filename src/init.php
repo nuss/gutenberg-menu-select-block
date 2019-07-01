@@ -77,39 +77,24 @@ function wp_menus_block_cgb_block_assets() { // phpcs:ignore
 			'editor_script' => 'wp_menus_block-cgb-block-js',
 			// Enqueue blocks.editor.build.css in the editor only.
 			'editor_style'  => 'wp_menus_block-cgb-block-editor-css',
-			'render_callback' => 'render_menu_select',
+			'render_callback' => 'render_menu',
 		)
 	);
 }
 
-function render_menu_select($attributes) {
-	$class = 'wp-menu-select';
+function render_menu($attributes) {
+	if (is_nav_menu($attributes['menu'])) {
+		$menu = wp_get_nav_menu_object($attributes['menu']);
+		$menu = wp_nav_menu(array(
+			'menu' => $menu->slug,
+			'container' => 'nav',
+			'container_class' => 'subnav-left no-bullet subnav-left-' . $menu->slug,
+			'container_id' => 'subnav-left-' . $menu->slug,
+			'echo' => false
+		));
 
-	if (isset($attributes['className'])) {
-		$class .= " {$attributes['className']}";
+		return $menu;
 	}
-
-	$dropdown_id = esc_attr(uniqid('wp-block-menu-select-'));
-	$title = __('Menu Selection');
-
-	$menus = get_terms('nav_menu', array('hide_empty' => true, 'fields' => 'id=>name'));
-	$label = esc_attr(__('select menu...'));
-
-	$block_content = '<label class="screen-reader-text" for="' . $dropdown_id . '">' . $title . '</label>
-	<select id="' . $dropdown_id . '" name="menu-select">
-	<option>' . $label . '</option>';
-	foreach($menus as $id => $name) {
-		$block_content .= '<option value=' . $id .'>' . $name . '</option>';
-	}
-	$block_content .= '</select>';
-
-	$block_content = sprintf(
-		'<div class="%1$s">%2$s</div>',
-		esc_attr($class),
-		$block_content
-	);
-
-	return $block_content;
 }
 
 function get_menus_list() {

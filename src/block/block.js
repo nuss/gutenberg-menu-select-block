@@ -13,23 +13,18 @@ const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 import { SelectControl } from '@wordpress/components';
 // import { withState } from '@wordpress/compose';
-import apiFetch from '@wordpress/api-fetch';
-// import { registerStore, withSelect } from '@wordpress/data';
-
-const menuList = () => {
-	apiFetch( { path: '/wp-json/wp-menus-block/v1/menus' } ).then( ( menus ) => {
-		return menus;
-	} );
-};
+// import apiFetch from '@wordpress/api-fetch';
 
 const MenuSelect = ( { menu, setState } ) => {
 	return (
 		<SelectControl
 			label="Select Menu"
 			value={ menu }
-			options={ menuList() }
+			// eslint-disable-next-line no-undef
+			options={ menu_options.options }
 			onChange={ ( myMenu ) => {
-				setState( { myMenu } );
+				// setAttributes( { menu: myMenu } );
+				setState( { menu: myMenu } );
 			} }
 		/>
 	);
@@ -60,12 +55,13 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	],
 
 	attributes: {
-		'menu-id': {
+		menu: {
 			type: Number,
-			default: null,
+			default: 13,
 		},
 	},
 
+	// eslint-disable-next-line valid-jsdoc
 	/**
 	* The edit function describes the structure of your block in the context of the editor.
 	* This represents what the editor will render when the block is used.
@@ -84,6 +80,7 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 		);
 	},
 
+	// eslint-disable-next-line valid-jsdoc
 	/**
 	* The save function defines the way in which the different attributes should be combined
 	* into the final markup, which is then serialized by Gutenberg into post_content.
@@ -92,19 +89,10 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	*
 	* @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	*/
-	save: () => {
+	save: ( props ) => {
 		// console.log('save fired', props );
-		// return null;
 		return (
-			<div>
-				<p>— Hello from the frontend.</p>
-				<p>CGB BLOCK: <code>wp-menus-block</code> is a new Gutenberg block.</p>
-				<p>It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">create-guten-block</a>
-					</code>.
-				</p>
-			</div>
+			props.menu
 		);
 	},
 } );

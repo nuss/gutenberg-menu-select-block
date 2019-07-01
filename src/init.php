@@ -53,6 +53,12 @@ function wp_menus_block_cgb_block_assets() { // phpcs:ignore
 		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
 	);
 
+	wp_localize_script(
+		'wp_menus_block-cgb-block-js', // Handle.
+		'menu_options',
+		array('options' => get_menus_list())
+	);
+
 	/**
 	 * Register Gutenberg block on server-side.
 	 *

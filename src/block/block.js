@@ -23,7 +23,7 @@ const MenuSelect = withState( { menu: 13 } )( ( props, { menu } ) => (
 		// eslint-disable-next-line no-undef
 		options={ menu_options.options }
 		onChange={ ( selectedMenu ) => {
-			console.log( 'props', props, 'menu', selectedMenu );
+			// console.log( 'props', props, 'menu', selectedMenu );
 			props.setAttributes( { menu: selectedMenu } );
 			props.setState( { menu: selectedMenu } );
 		} }
@@ -57,7 +57,7 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	attributes: {
 		menu: {
 			type: Number,
-			default: 13,
+			default: 0,
 		},
 	},
 
@@ -90,7 +90,7 @@ registerBlockType( 'cgb/block-wp-menus-block', {
 	* @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	*/
 	save: ( props ) => {
-		console.log('save fired', props );
+		// console.log('save fired', props );
 		return (
 			props.menu
 		);
